@@ -1,67 +1,102 @@
 package Vista;
 
+import Controlador.Buscador; 
+import Controlador.ModificacionRutas;
+import java.sql.Connection; 
+import java.util.List;
 import java.util.Scanner;
 
 public class VistaRutas {
     private Scanner scanner;
+    private ModificacionRutas modificador;
+    private Buscador buscador; 
 
-    public VistaRutas(Scanner scanner) {
+    public VistaRutas(Scanner scanner, Connection conexion) { 
         this.scanner = scanner;
+        this.modificador = new ModificacionRutas(conexion);
+        this.buscador = new Buscador(); 
     }
 
     public void mostrarMenuRutas() {
-        System.out.println("\n=== GESTIÓN DE RUTAS ===");
-        System.out.println("1. Ver todas las rutas");
-        System.out.println("2. Optimizar rutas");
-        System.out.println("3. Modificar ruta");
-        System.out.print("Seleccione una opción: ");
+        System.out.println("\n=== GESTION DE LÍNEAS ==="); 
+        System.out.println("1. Ver todas las líneas"); 
+        //System.out.println("2. Optimizar lIneas"); 
+        System.out.println("3. Modificar lInea"); 
+        System.out.println("4. Volver al menu principal"); 
+        System.out.print("Seleccione una opcion: ");
         
         int opcion = scanner.nextInt();
-        scanner.nextLine(); // Limpiar buffer
+        scanner.nextLine(); 
         
         switch (opcion) {
             case 1:
-                mostrarTodasLasRutas();
+                mostrarTodasLasLineas(); 
                 break;
-            case 2:
-                optimizarRutas();
-                break;
+            /**case 2:
+                optimizarLineas(); 
+                break;*/
             case 3:
-                modificarRuta();
+                modificarLinea(); 
                 break;
+            case 4:
+                return; 
             default:
-                System.out.println("Opción no válida");
+                System.out.println("Opcion no valida");
         }
     }
 
-    private void mostrarTodasLasRutas() {
-        System.out.println("\n=== LISTADO DE RUTAS ===");
-        // Simulación de datos
-        System.out.println("Ruta 12: Centro Universitario - Terminal Norte");
-        System.out.println("Ruta 5: Terminal Sur - Parque Industrial");
+    private void mostrarTodasLasLineas() { 
+        System.out.println("\n=== LISTADO DE LÍNEAS ==="); 
+        List<String> lineas = buscador.buscarTodasLasLineas(); 
+        if (lineas.isEmpty()) {
+            System.out.println("No se encontraron líneas.");
+        } else {
+            lineas.forEach(System.out::println);
+        }
     }
 
-    private void optimizarRutas() {
-        System.out.println("\n=== OPTIMIZACIÓN DE RUTAS ===");
-        System.out.println("Analizando rendimiento de rutas...");
-        // Simulación de análisis
-        System.out.println("Ruta 12: 78% de ocupación (Óptima)");
-        System.out.println("Ruta 5: 45% de ocupación (Requiere ajustes)");
-    }
+    /**private void optimizarLineas() { 
+        System.out.println("\n=== OPTIMIZACIÓN DE LÍNEAS ==="); 
+        System.out.println("Analizando rendimiento de líneas..."); 
+        System.out.println("Línea 12: 78% de ocupación (Óptima)");
+        System.out.println("Línea 5: 45% de ocupación (Requiere ajustes)");
+    }*/
 
-    private void modificarRuta() {
-        System.out.println("\n=== MODIFICAR RUTA ===");
-        System.out.print("Ingrese ID de ruta a modificar: ");
-        String idRuta = scanner.nextLine();
+    private void modificarLinea() { 
+        System.out.println("\n=== MODIFICAR LINEA ==="); 
+        System.out.print("Ingrese ID de linea a modificar: ");
+        String idLinea = scanner.nextLine();
         
-        System.out.println("Opciones para la ruta " + idRuta + ":");
+        System.out.println("Opciones para la linea " + idLinea + ":");
         System.out.println("1. Agregar paradas");
         System.out.println("2. Ajustar horarios");
-        System.out.println("3. Asignar nuevo bus");
+        // System.out.println("3. Asignar nuevo bus"); 
+        System.out.print("Seleccione una opcion: ");
         
         int opcion = scanner.nextInt();
         scanner.nextLine();
         
-        System.out.println("Modificación realizada con éxito");
+        boolean exito = false;
+        switch (opcion) {
+            case 1:
+                System.out.print("Ingrese nuevas paradas (separadas por punto y coma): ");
+                String nuevasParadas = scanner.nextLine();
+                exito = modificador.agregarParadas(idLinea, nuevasParadas);
+                break;
+            case 2:
+                System.out.print("Ingrese nuevos horarios (separados por coma): ");
+                String nuevosHorarios = scanner.nextLine();
+                exito = modificador.ajustarHorarios(idLinea, nuevosHorarios);
+                break;
+            default:
+                System.out.println("Opcion no valida.");
+                return;
+        }
+
+        if (exito) {
+            System.out.println("Modificacion realizada con exito para la linea " + idLinea);
+        } else {
+            System.out.println("Error al realizar la modificacion para la linea " + idLinea + ". Verifique el ID.");
+        }
     }
 }

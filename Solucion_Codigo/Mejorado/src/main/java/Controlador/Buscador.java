@@ -1,46 +1,72 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package controlador;
+package Controlador;
 
 import Modelo.*;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Buscador {
-    private List<Ruta> rutasDisponibles;
-    private List<Horario> horariosDisponibles;
+    
+    public List<String> buscarLineasPorParada(String nombreParada) {
+        List<String> lineas = new ArrayList<>();
 
-    public Buscador(List<Ruta> rutas, List<Horario> horarios) {
-        this.rutasDisponibles = rutas;
-        this.horariosDisponibles = horarios;
-    }
-
-    public Ruta buscarRutaPorParada(String nombreParada) {
-        for (Ruta ruta : rutasDisponibles) {
-            for (Parada parada : ruta.getParadas()) {
-                if (parada.getNombre().equalsIgnoreCase(nombreParada)) {
-                    return ruta;
-                }
+        String sql = "SELECT id_linea, nombre FROM lineas WHERE LOWER(REPLACE(REPLACE(REPLACE(REPLACE(paradas, 'á', 'a'), 'é', 'e'), 'í', 'i'), 'ó', 'o')) " +
+                     "LIKE LOWER(CONCAT('%', REPLACE(REPLACE(REPLACE(REPLACE(?, 'á', 'a'), 'é', 'e'), 'í', 'i'), 'ó', 'o'), '%'))";
+        
+        try (Connection conn = Conexion.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            
+            pstmt.setString(1, nombreParada);
+            ResultSet rs = pstmt.executeQuery();
+            
+            while (rs.next()) {
+                lineas.add(String.format("%s - %s", 
+                    rs.getString("id_linea"), 
+                    rs.getString("nombre")));
             }
+        } catch (SQLException e) {
+            System.err.println("Error al buscar lineas por parada: " + e.getMessage());
         }
-        return null;
+        return lineas;
     }
 
-    public Horario buscarHorario(String horaInicio, Ruta ruta) {
-        for (Horario horario : horariosDisponibles) {
-            if (horario.getHoraInicio().equals(horaInicio) && 
-                horario.getRuta().equals(ruta)) {
-                return horario;
+    public List<String> buscarHorariosPorLinea(String idLinea) {
+        List<String> horarios = new ArrayList<>();
+
+        String sql = "SELECT hora FROM horarios WHERE CONCAT(',', lineas, ',') LIKE ? ORDER BY STR_TO_DATE(hora, '%l:%i %p')";
+        
+        try (Connection conn = Conexion.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            
+            pstmt.setString(1, "%," + idLinea + ",%"); 
+            ResultSet rs = pstmt.executeQuery();
+            
+            while (rs.next()) {
+                horarios.add(rs.getString("hora"));
             }
+        } catch (SQLException e) {
+            System.err.println("Error al buscar horarios por linea: " + e.getMessage());
         }
-        return null;
+        return horarios;
     }
 
-    public List<Bus> obtenerBusesDisponibles(Horario horario) {
-        // Lógica para filtrar buses disponibles según horario
-        return horario.getRuta().getBuses().stream()
-            .filter(bus -> bus.getHorarios().contains(horario))
-            .toList();
+    public List<String> buscarTodasLasLineas() {
+        List<String> lineas = new ArrayList<>();
+        String sql = "SELECT id_linea, nombre, paradas FROM lineas ORDER BY id_linea";
+        
+        try (Connection conn = Conexion.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            
+            while (rs.next()) {
+                lineas.add(String.format("ID: %s, Nombre: %s, Paradas: %s", 
+                    rs.getString("id_linea"), 
+                    rs.getString("nombre"),
+                    rs.getString("paradas")));
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al buscar todas las lineas: " + e.getMessage());
+        }
+        return lineas;
     }
 }

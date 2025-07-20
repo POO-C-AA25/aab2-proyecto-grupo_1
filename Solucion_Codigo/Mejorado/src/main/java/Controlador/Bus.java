@@ -1,27 +1,29 @@
-package Modelo;
+package Controlador;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Bus {
     private String id;
     private String placa;
-    private String capacidad;
+    private int capacidad; 
     private Chofer chofer;
     private List<Horario> horarios;
-    private List<Ruta> rutas;
+    private List<Linea> lineas; 
 
-    public Bus(String id, String placa, String capacidad) {
+    public Bus(String id, String placa, int capacidad) { 
         this.id = id;
         this.placa = placa;
         this.capacidad = capacidad;
+        this.horarios = new ArrayList<>(); 
+        this.lineas = new ArrayList<>(); 
     }
 
-    // Métodos existentes más...
     public void asignarChofer(Chofer chofer) {
         this.chofer = chofer;
     }
 
-    public void designarRuta(Ruta ruta, Horario horario) {
-        this.rutas.add(ruta);
+    public void designarLinea(Linea linea, Horario horario) {
+        this.lineas.add(linea);
         this.horarios.add(horario);
         if (chofer != null) {
             chofer.agregarHorarioDesignado(horario);
@@ -44,11 +46,11 @@ public class Bus {
         this.placa = placa;
     }
 
-    public String getCapacidad() {
+    public int getCapacidad() { 
         return capacidad;
     }
 
-    public void setCapacidad(String capacidad) {
+    public void setCapacidad(int capacidad) { 
         this.capacidad = capacidad;
     }
 
@@ -68,12 +70,12 @@ public class Bus {
         this.horarios = horarios;
     }
 
-    public List<Ruta> getRutas() {
-        return rutas;
+    public List<Linea> getLineas() { 
+        return lineas;
     }
 
-    public void setRutas(List<Ruta> rutas) {
-        this.rutas = rutas;
+    public void setLineas(List<Linea> lineas) {
+        this.lineas = lineas;
     }
 
     public void agregarHorario(Horario horario) {
@@ -84,16 +86,16 @@ public class Bus {
         this.horarios.remove(horario);
     }
 
-    public void agregarRuta(Ruta ruta) {
-        this.rutas.add(ruta);
+    public void agregarLinea(Linea linea) { 
+        this.lineas.add(linea);
     }
 
-    public void eliminarRuta(Ruta ruta) {
-        this.rutas.remove(ruta);
+    public void eliminarLinea(Linea linea) { 
+        this.lineas.remove(linea);
     }
 
-    public boolean tieneRuta(Ruta ruta) {
-        return this.rutas.contains(ruta);
+    public boolean tieneLinea(Linea linea) { 
+        return this.lineas.contains(linea);
     }
 
     public boolean tieneHorario(Horario horario) {
@@ -105,8 +107,8 @@ public class Bus {
         return "Bus{" +
                 "id='" + id + '\'' +
                 ", placa='" + placa + '\'' +
-                ", capacidad='" + capacidad + '\'' +
-                ", chofer=" + chofer +
+                ", capacidad=" + capacidad + 
+                ", chofer=" + (chofer != null ? chofer.getNombre() : "N/A") + 
                 '}';
     }
 }

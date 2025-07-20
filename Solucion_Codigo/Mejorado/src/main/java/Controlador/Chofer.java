@@ -1,15 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package Modelo;
+package Controlador;
 
+import java.util.ArrayList; // Importar ArrayList
 import java.util.List;
 
-/**
- *
- * @author User
- */
 public class Chofer extends Persona{
     private String licencia;
     private List<Horario> horariosDesignados;
@@ -17,6 +10,7 @@ public class Chofer extends Persona{
     public Chofer(String nombre, String cedula, String licencia) {
         super(nombre, cedula);
         this.licencia = licencia;
+        this.horariosDesignados = new ArrayList<>(); // Inicializar lista
     }
 
     @Override
@@ -36,7 +30,6 @@ public class Chofer extends Persona{
         return horariosDesignados;
     }
 
-    // Getters y Setters adicionales
     public String getLicencia() {
         return licencia;
     }

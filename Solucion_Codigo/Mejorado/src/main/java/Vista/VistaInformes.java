@@ -11,10 +11,10 @@ public class VistaInformes {
 
     public void mostrarMenuInformes() {
         System.out.println("\n=== REPORTES E INFORMES ===");
-        System.out.println("1. Rutas más concurridas");
+        System.out.println("1. Rutas mss concurridas");
         System.out.println("2. Rutas menos concurridas");
         System.out.println("3. Informe completo");
-        System.out.print("Seleccione una opción: ");
+        System.out.print("Seleccione una opcion: ");
         
         int opcion = scanner.nextInt();
         scanner.nextLine();
@@ -35,22 +35,22 @@ public class VistaInformes {
     }
 
     private void mostrarRutasConcurridas() {
-        System.out.println("\n=== RUTAS MÁS CONCURRIDAS ===");
-        System.out.println("1. Ruta 12 - 85% de ocupación promedio");
-        System.out.println("2. Ruta 8 - 78% de ocupación promedio");
+        System.out.println("\n=== RUTAS MAS CONCURRIDAS ===");
+        //System.out.println("1. Ruta 12 - 85% de ocupacion promedio");
+        //System.out.println("2. Ruta 8 - 78% de ocupacion promedio");
     }
 
     private void mostrarRutasMenosConcurridas() {
         System.out.println("\n=== RUTAS MENOS CONCURRIDAS ===");
-        System.out.println("1. Ruta 5 - 45% de ocupación promedio");
-        System.out.println("2. Ruta 3 - 52% de ocupación promedio");
+        //System.out.println("1. Ruta 5 - 45% de ocupacion promedio");
+        //System.out.println("2. Ruta 3 - 52% de ocupacion promedio");
     }
 
     private void generarInformeCompleto() {
         System.out.println("\n=== INFORME COMPLETO ===");
-        System.out.println("Total rutas: 15");
-        System.out.println("Ocupación promedio: 68%");
-        System.out.println("Rutas óptimas: 10");
-        System.out.println("Rutas que requieren ajustes: 5");
+        //System.out.println("Total rutas: 15");
+        //System.out.println("Ocupacion promedio: 68%");
+        //System.out.println("Rutas optimas: 10");
+        //System.out.println("Rutas que requieren ajustes: 5");
     }
 }

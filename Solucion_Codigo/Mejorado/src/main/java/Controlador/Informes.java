@@ -1,52 +1,44 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Controlador;
 
-import Modelo.*;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class Informes {
-    public String generarInformeRutas(List<Ruta> rutas, List<OptimizacionRutas.AnalisisRuta> analisis) {
+    public String generarInformeLineas(List<Linea> lineas, List<OptimizacionRutas.AnalisisLinea> analisis) {
         StringBuilder informe = new StringBuilder();
         
-        // Rutas más concurridas
-        informe.append("=== RUTAS MÁS CONCURRIDAS ===\n");
+        informe.append("=== LINEAS MAS CONCURRIDAS ===\n");
         analisis.stream()
             .sorted(Comparator.comparingDouble(a -> -a.porcentajeOcupacion))
             .limit(3)
             .forEach(a -> informe.append(String.format(
-                "Ruta %s: %.2f%% ocupación\n", 
-                a.ruta.getId(), a.porcentajeOcupacion)));
+                "Linea %s: %.2f%% ocupacin\n", 
+                a.linea.getIdLinea(), a.porcentajeOcupacion))); 
         
-        // Rutas menos concurridas
-        informe.append("\n=== RUTAS MENOS CONCURRIDAS ===\n");
+        informe.append("\n=== LINEAS MENOS CONCURRIDAS ===\n");
         analisis.stream()
             .sorted(Comparator.comparingDouble(a -> a.porcentajeOcupacion))
             .limit(3)
             .forEach(a -> informe.append(String.format(
-                "Ruta %s: %.2f%% ocupación\n", 
-                a.ruta.getId(), a.porcentajeOcupacion)));
+                "Línea %s: %.2f%% ocupacion\n", 
+                a.linea.getIdLinea(), a.porcentajeOcupacion))); 
         
-        // Resumen estadístico
         double promedio = analisis.stream()
             .mapToDouble(a -> a.porcentajeOcupacion)
             .average()
             .orElse(0);
         
-        long rutasFavorables = analisis.stream()
+        long lineasFavorables = analisis.stream() 
             .filter(a -> a.esFavorable)
             .count();
         
-        informe.append("\n=== RESUMEN ESTADÍSTICO ===\n")
-              .append(String.format("Total rutas: %d\n", rutas.size()))
-              .append(String.format("Ocupación promedio: %.2f%%\n", promedio))
-              .append(String.format("Rutas con buen desempeño: %d\n", rutasFavorables))
-              .append(String.format("Rutas que requieren ajustes: %d", 
-                     rutas.size() - rutasFavorables));
+        informe.append("\n=== RESUMEN ESTADISTICO ===\n")
+              .append(String.format("Total lineas: %d\n", lineas.size())) 
+              .append(String.format("Ocupacion promedio: %.2f%%\n", promedio))
+              .append(String.format("Lineas con buen desempeño: %d\n", lineasFavorables)) 
+              .append(String.format("Lneas que requieren ajustes: %d", 
+                     lineas.size() - lineasFavorables));
         
         return informe.toString();
     }

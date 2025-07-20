@@ -1,5 +1,8 @@
 package Vista;
 
+import Modelo.Conexion;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class VistaPrincipal {
@@ -8,27 +11,30 @@ public class VistaPrincipal {
     private VistaRutas vistaRutas;
     private VistaAdmin vistaAdmin;
     private VistaInformes vistaInformes;
+    private Connection conexion;
 
-    public VistaPrincipal() {
+    public VistaPrincipal(Connection conexion) {
+        this.conexion = conexion;
         this.scanner = new Scanner(System.in);
-        this.vistaBusqueda = new VistaBusqueda(scanner);
-        this.vistaRutas = new VistaRutas(scanner);
-        this.vistaAdmin = new VistaAdmin(scanner);
+        this.vistaBusqueda= new VistaBusqueda(scanner);
+        this.vistaRutas = new VistaRutas(scanner, conexion); 
+        this.vistaAdmin = new VistaAdmin(scanner, conexion);
         this.vistaInformes = new VistaInformes(scanner);
     }
 
     public void mostrarMenu() {
-        while (true) {
+        int opcion;
+        do {
             System.out.println("\n=== SISTEMA DE TRANSPORTE ===");
-            System.out.println("1. Buscar rutas y horarios");
-            System.out.println("2. Gestión de rutas");
-            System.out.println("3. Administración del sistema");
-            System.out.println("4. Reportes e informes");
+            System.out.println("1. Buscar lineas y horarios"); 
+            System.out.println("2. Gestion de lineas"); 
+            System.out.println("3. Administracion del sistema");
+            //System.out.println("4. Reportes e informes");
             System.out.println("5. Salir");
-            System.out.print("Seleccione una opción: ");
+            System.out.print("Seleccione una opcion: ");
 
-            int opcion = scanner.nextInt();
-            scanner.nextLine(); // Limpiar buffer
+            opcion = scanner.nextInt();
+            scanner.nextLine(); 
 
             switch (opcion) {
                 case 1:
@@ -40,15 +46,30 @@ public class VistaPrincipal {
                 case 3:
                     vistaAdmin.mostrarMenuAdmin();
                     break;
-                case 4:
-                    vistaInformes.mostrarMenuInformes();
-                    break;
+                //case 4:
+                    //vistaInformes.mostrarMenuInformes();
+                    //break;
                 case 5:
+                    cerrarConexion();
                     System.out.println("Saliendo del sistema...");
                     return;
                 default:
-                    System.out.println("Opción no válida. Intente nuevamente.");
+                    System.out.println("Opcion no valida. Intente nuevamente.");
             }
+        } while (true);
+    }
+
+    private void cerrarConexion() {
+        try {
+            if (conexion != null && !conexion.isClosed()) {
+                conexion.close();
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al cerrar la conexion: " + e.getMessage());
         }
+    }
+
+    public Connection getConexion() {
+        return conexion;
     }
 }

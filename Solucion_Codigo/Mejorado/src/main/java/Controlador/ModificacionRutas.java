@@ -1,38 +1,103 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Controlador;
 
-import Modelo.*;
+import Modelo.Conexion;
+import java.sql.*;
+import java.util.Arrays;
 import java.util.List;
 
 public class ModificacionRutas {
-    public void eliminarRuta(Ruta ruta, List<Ruta> sistemaRutas) {
-        sistemaRutas.remove(ruta);
-        // Desasociar de buses y choferes
-        for (Bus bus : ruta.getBuses()) {
-            bus.getRutas().remove(ruta);
+    private Connection conexion;
+
+    public ModificacionRutas(Connection conexion) {
+        this.conexion = conexion;
+    }
+
+    public boolean crearLinea(String idLinea, String nombre, String paradas) {
+        String sql = "INSERT INTO lineas (id_linea, nombre, paradas) VALUES (?, ?, ?)";
+        try (PreparedStatement pstmt = conexion.prepareStatement(sql)) {
+            pstmt.setString(1, idLinea);
+            pstmt.setString(2, nombre);
+            pstmt.setString(3, paradas);
+            int affectedRows = pstmt.executeUpdate();
+            conexion.commit(); 
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            System.err.println("Error al crear linea: " + e.getMessage());
+            try {
+                conexion.rollback(); 
+            } catch (SQLException ex) {
+                System.err.println("Error al revertir: " + ex.getMessage());
+            }
+            return false;
         }
-        for (Chofer chofer : ruta.getChoferes()) {
-            chofer.getHorariosDesignados().removeIf(h -> h.getRuta().equals(ruta));
+    }
+
+    public boolean eliminarLinea(String idLinea) { 
+        String sql = "DELETE FROM lineas WHERE id_linea = ?"; 
+        try (PreparedStatement pstmt = conexion.prepareStatement(sql)) {
+            pstmt.setString(1, idLinea);
+            int affectedRows = pstmt.executeUpdate();
+            conexion.commit();
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            System.err.println("Error al eliminar línea: " + e.getMessage());
+            try {
+                conexion.rollback();
+            } catch (SQLException ex) {
+                System.err.println("Error al revertir: " + ex.getMessage());
+            }
+            return false;
         }
     }
 
-    public void agregarParadas(Ruta ruta, List<Parada> nuevasParadas) {
-        ruta.getParadas().addAll(nuevasParadas);
+    public boolean agregarParadas(String idLinea, String nuevasParadas) {
+    String sql = "UPDATE lineas SET paradas = CONCAT(paradas, ';', ?) WHERE id_linea = ?";
+    try (PreparedStatement pstmt = conexion.prepareStatement(sql)) {
+        pstmt.setString(1, nuevasParadas);
+        pstmt.setString(2, idLinea);
+        int affectedRows = pstmt.executeUpdate();
+        return affectedRows > 0;
+    } catch (SQLException e) {
+        System.err.println("Error al agregar paradas: " + e.getMessage());
+        return false;
+    }
     }
 
-    public void ajustarHorarios(Ruta ruta, Horario nuevoHorario) {
-        ruta.getHorarios().add(nuevoHorario);
+    public boolean ajustarHorarios(String idLinea, String nuevosHorarios) { 
+        String sql = "UPDATE lineas SET horarios = CONCAT(horarios, ',', ?) WHERE id_linea = ?"; 
+        try (PreparedStatement pstmt = conexion.prepareStatement(sql)) {
+            pstmt.setString(1, nuevosHorarios);
+            pstmt.setString(2, idLinea);
+            int affectedRows = pstmt.executeUpdate();
+            conexion.commit();
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            System.err.println("Error al ajustar horarios: " + e.getMessage());
+            try {
+                conexion.rollback();
+            } catch (SQLException ex) {
+                System.err.println("Error al revertir: " + ex.getMessage());
+            }
+            return false;
+        }
     }
 
-    public void asignarRutaABus(Ruta ruta, Bus bus, Chofer chofer, Horario horario) {
-        bus.getRutas().add(ruta);
-        bus.setChofer(chofer);
-        chofer.agregarHorarioDesignado(horario);
-        ruta.getBuses().add(bus);
-        ruta.getChoferes().add(chofer);
-        ruta.getHorarios().add(horario);
+    public boolean asignarChoferABus(String idBus, String idChofer) {
+        String sql = "UPDATE buses SET id_chofer = ? WHERE id_bus = ?";
+        try (PreparedStatement pstmt = conexion.prepareStatement(sql)) {
+            pstmt.setString(1, idChofer);
+            pstmt.setString(2, idBus);
+            int affectedRows = pstmt.executeUpdate();
+            conexion.commit();
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            System.err.println("Error al asignar chofer al bus: " + e.getMessage());
+            try {
+                conexion.rollback();
+            } catch (SQLException ex) {
+                System.err.println("Error al revertir: " + ex.getMessage());
+            }
+            return false;
+        }
     }
 }
