@@ -3,17 +3,16 @@ package Controlador;
 import java.util.Arrays;
 
 public class Linea {
-    private String idLinea; 
-    private String nombre;  
+    private String idLinea;
+    private String nombre;
     private String[] paradas;
     private String[] horarios;
 
- 
     public Linea(String idLinea, String nombre) {
         this.idLinea = idLinea;
         this.nombre = nombre;
-        this.paradas = new String[]{}; 
-        this.horarios = new String[]{}; 
+        this.paradas = new String[] {};
+        this.horarios = new String[] {};
     }
 
     public String getIdLinea() {
@@ -59,7 +58,7 @@ public class Linea {
     @Override
     public String toString() {
         return "Linea " + idLinea + ": " + nombre +
-               "\nParadas: " + Arrays.toString(paradas) +
-               "\nHorarios: " + Arrays.toString(horarios);
+                "\nParadas: " + Arrays.toString(paradas) +
+                "\nHorarios: " + Arrays.toString(horarios);
     }
 }

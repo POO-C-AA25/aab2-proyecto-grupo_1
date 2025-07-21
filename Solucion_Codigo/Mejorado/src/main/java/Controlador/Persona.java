@@ -4,8 +4,6 @@
  */
 package Controlador;
 
-import java.util.List;
-
 public abstract class Persona {
     protected String nombre;
     protected String cedula;
@@ -25,4 +23,3 @@ public abstract class Persona {
         return cedula;
     }
 }
-

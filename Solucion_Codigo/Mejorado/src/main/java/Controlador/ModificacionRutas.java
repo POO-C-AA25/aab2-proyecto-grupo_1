@@ -1,9 +1,6 @@
 package Controlador;
 
-import Modelo.Conexion;
 import java.sql.*;
-import java.util.Arrays;
-import java.util.List;
 
 public class ModificacionRutas {
     private Connection conexion;
@@ -19,12 +16,12 @@ public class ModificacionRutas {
             pstmt.setString(2, nombre);
             pstmt.setString(3, paradas);
             int affectedRows = pstmt.executeUpdate();
-            conexion.commit(); 
+            conexion.commit();
             return affectedRows > 0;
         } catch (SQLException e) {
             System.err.println("Error al crear linea: " + e.getMessage());
             try {
-                conexion.rollback(); 
+                conexion.rollback();
             } catch (SQLException ex) {
                 System.err.println("Error al revertir: " + ex.getMessage());
             }
@@ -32,8 +29,8 @@ public class ModificacionRutas {
         }
     }
 
-    public boolean eliminarLinea(String idLinea) { 
-        String sql = "DELETE FROM lineas WHERE id_linea = ?"; 
+    public boolean eliminarLinea(String idLinea) {
+        String sql = "DELETE FROM lineas WHERE id_linea = ?";
         try (PreparedStatement pstmt = conexion.prepareStatement(sql)) {
             pstmt.setString(1, idLinea);
             int affectedRows = pstmt.executeUpdate();
@@ -51,20 +48,20 @@ public class ModificacionRutas {
     }
 
     public boolean agregarParadas(String idLinea, String nuevasParadas) {
-    String sql = "UPDATE lineas SET paradas = CONCAT(paradas, ';', ?) WHERE id_linea = ?";
-    try (PreparedStatement pstmt = conexion.prepareStatement(sql)) {
-        pstmt.setString(1, nuevasParadas);
-        pstmt.setString(2, idLinea);
-        int affectedRows = pstmt.executeUpdate();
-        return affectedRows > 0;
-    } catch (SQLException e) {
-        System.err.println("Error al agregar paradas: " + e.getMessage());
-        return false;
-    }
+        String sql = "UPDATE lineas SET paradas = CONCAT(paradas, ';', ?) WHERE id_linea = ?";
+        try (PreparedStatement pstmt = conexion.prepareStatement(sql)) {
+            pstmt.setString(1, nuevasParadas);
+            pstmt.setString(2, idLinea);
+            int affectedRows = pstmt.executeUpdate();
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            System.err.println("Error al agregar paradas: " + e.getMessage());
+            return false;
+        }
     }
 
-    public boolean ajustarHorarios(String idLinea, String nuevosHorarios) { 
-        String sql = "UPDATE lineas SET horarios = CONCAT(horarios, ',', ?) WHERE id_linea = ?"; 
+    public boolean ajustarHorarios(String idLinea, String nuevosHorarios) {
+        String sql = "UPDATE lineas SET horarios = CONCAT(horarios, ',', ?) WHERE id_linea = ?";
         try (PreparedStatement pstmt = conexion.prepareStatement(sql)) {
             pstmt.setString(1, nuevosHorarios);
             pstmt.setString(2, idLinea);

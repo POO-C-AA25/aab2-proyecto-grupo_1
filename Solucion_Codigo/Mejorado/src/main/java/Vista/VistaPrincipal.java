@@ -1,6 +1,5 @@
 package Vista;
 
-import Modelo.Conexion;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -10,7 +9,6 @@ public class VistaPrincipal {
     private VistaBusqueda vistaBusqueda;
     private VistaRutas vistaRutas;
     private VistaAdmin vistaAdmin;
-    private VistaInformes vistaInformes;
     private Connection conexion;
 
     public VistaPrincipal(Connection conexion) {
@@ -19,7 +17,6 @@ public class VistaPrincipal {
         this.vistaBusqueda= new VistaBusqueda(scanner);
         this.vistaRutas = new VistaRutas(scanner, conexion); 
         this.vistaAdmin = new VistaAdmin(scanner, conexion);
-        this.vistaInformes = new VistaInformes(scanner);
     }
 
     public void mostrarMenu() {
@@ -29,8 +26,7 @@ public class VistaPrincipal {
             System.out.println("1. Buscar lineas y horarios"); 
             System.out.println("2. Gestion de lineas"); 
             System.out.println("3. Administracion del sistema");
-            //System.out.println("4. Reportes e informes");
-            System.out.println("5. Salir");
+            System.out.println("4. Salir");
             System.out.print("Seleccione una opcion: ");
 
             opcion = scanner.nextInt();
@@ -46,10 +42,7 @@ public class VistaPrincipal {
                 case 3:
                     vistaAdmin.mostrarMenuAdmin();
                     break;
-                //case 4:
-                    //vistaInformes.mostrarMenuInformes();
-                    //break;
-                case 5:
+                case 4:
                     cerrarConexion();
                     System.out.println("Saliendo del sistema...");
                     return;
