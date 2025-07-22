@@ -61,7 +61,7 @@ public class ModificacionRutas {
     }
 
     public boolean ajustarHorarios(String idLinea, String nuevosHorarios) {
-        String sql = "UPDATE lineas SET horarios = CONCAT(horarios, ',', ?) WHERE id_linea = ?";
+        String sql = "UPDATE lineas SET horarios = CONCAT(COALESCE(horarios, ''), ';', ?) WHERE id_linea = ?";
         try (PreparedStatement pstmt = conexion.prepareStatement(sql)) {
             pstmt.setString(1, nuevosHorarios);
             pstmt.setString(2, idLinea);
@@ -97,4 +97,5 @@ public class ModificacionRutas {
             return false;
         }
     }
+
 }

@@ -33,15 +33,11 @@ public class Buscador {
 
     public List<String> buscarHorariosPorLinea(String idLinea) {
         List<String> horarios = new ArrayList<>();
-
-        String sql = "SELECT hora FROM horarios WHERE CONCAT(',', lineas, ',') LIKE ? ORDER BY STR_TO_DATE(hora, '%l:%i %p')";
-
+        String sql = "SELECT hora FROM horarios WHERE lineas LIKE ? ORDER BY hora";
         try (Connection conn = Conexion.getConnection();
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setString(1, "%," + idLinea + ",%");
+            pstmt.setString(1, "%" + idLinea + "%");
             ResultSet rs = pstmt.executeQuery();
-
             while (rs.next()) {
                 horarios.add(rs.getString("hora"));
             }
@@ -67,6 +63,25 @@ public class Buscador {
             }
         } catch (SQLException e) {
             System.err.println("Error al buscar todas las lineas: " + e.getMessage());
+        }
+        return lineas;
+    }
+    
+    public List<Linea> obtenerTodasLasLineasComoObjetos() {
+        List<Linea> lineas = new ArrayList<>();
+        String sql = "SELECT id_linea, nombre, paradas FROM lineas ORDER BY id_linea";
+
+        try (Connection conn = Conexion.getConnection();
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                Linea linea = new Linea(rs.getString("id_linea"), rs.getString("nombre"));
+                linea.setParadas(rs.getString("paradas"));
+                lineas.add(linea);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al obtener líneas como objetos: " + e.getMessage());
         }
         return lineas;
     }

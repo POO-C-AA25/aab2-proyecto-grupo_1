@@ -1,19 +1,16 @@
 package Controlador;
 
-/**
- *
- * @author User
- */
 public class Horario {
 
     private String dia;
     private String horaInicio;
     private String horaFin;
-    private Linea linea; 
+    private Linea linea;
     private Bus bus;
     private Chofer chofer;
 
-    public Horario(String dia, String horaInicio, String horaFin, Linea linea, Bus bus, Chofer chofer) { // Cambiado a Linea
+    public Horario(String dia, String horaInicio, String horaFin, Linea linea, Bus bus, Chofer chofer) { // Cambiado a
+                                                                                                         // Linea
         this.dia = dia;
         this.horaInicio = horaInicio;
         this.horaFin = horaFin;
@@ -35,7 +32,7 @@ public class Horario {
         return horaFin;
     }
 
-    public Linea getLinea() { 
+    public Linea getLinea() {
         return linea;
     }
 

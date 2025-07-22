@@ -1,6 +1,6 @@
 package Controlador;
 
-import java.util.ArrayList; // Importar ArrayList
+import java.util.ArrayList;
 import java.util.List;
 
 public class Chofer extends Persona{
@@ -10,7 +10,7 @@ public class Chofer extends Persona{
     public Chofer(String nombre, String cedula, String licencia) {
         super(nombre, cedula);
         this.licencia = licencia;
-        this.horariosDesignados = new ArrayList<>(); // Inicializar lista
+        this.horariosDesignados = new ArrayList<>(); 
     }
 
     @Override

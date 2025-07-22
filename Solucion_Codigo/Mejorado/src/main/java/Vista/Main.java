@@ -1,4 +1,4 @@
-import Vista.VistaPrincipal;
+package Vista;
 import Modelo.Conexion;
 import Modelo.DatosRutas;
 import java.sql.Connection;
@@ -23,7 +23,7 @@ public class Main {
             System.err.println("Error en la aplicacn: " + e.getMessage());
             e.printStackTrace();
         } finally {
-
+            Conexion.closeConnection(conexion);
         }
     }
 }

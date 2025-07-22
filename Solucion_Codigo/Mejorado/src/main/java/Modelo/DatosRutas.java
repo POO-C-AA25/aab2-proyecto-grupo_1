@@ -11,14 +11,11 @@ public class DatosRutas {
         try {
             conn = Conexion.getConnection();
             conn.setAutoCommit(false);
-
             limpiarTablas(conn);
-
             cargarLineas(conn);
             cargarHorarios(conn);
             cargarChoferes(conn);
             cargarBuses(conn);
-
             conn.commit();
             System.out.println("Carga de datos completada exitosamente!");
         } catch (SQLException | IOException e) {
@@ -39,41 +36,32 @@ public class DatosRutas {
 
     private void limpiarTablas(Connection conn) throws SQLException {
         try (Statement stmt = conn.createStatement()) {
-
             stmt.execute("SET FOREIGN_KEY_CHECKS = 0");
-
             stmt.execute("TRUNCATE TABLE buses");
             stmt.execute("TRUNCATE TABLE choferes");
             stmt.execute("TRUNCATE TABLE horarios");
             stmt.execute("TRUNCATE TABLE lineas");
-
             stmt.execute("SET FOREIGN_KEY_CHECKS = 1");
         }
     }
 
     private void cargarLineas(Connection conn) throws SQLException, IOException {
-
-        String filePath = "C:\\Users\\User\\Desktop\\Estructuras de datos\\Mejorado\\src\\main\\java\\Recursos\\Lineasbu.csv";
-
+        String filePath = "C:\\Users\\Lenin\\Desktop\\aab2-proyecto-grupo_1\\Solucion_Codigo\\Mejorado\\src\\main\\java\\Recursos\\Lineasbus.csv";
         String sql = "INSERT IGNORE INTO lineas (id_linea, nombre, paradas) VALUES (?, ?, ?)";
-
         try (BufferedReader br = new BufferedReader(new FileReader(filePath));
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
             String line;
             while ((line = br.readLine()) != null) {
                 String[] datos = line.split(";");
                 if (datos.length >= 3) {
                     pstmt.setString(1, datos[0].trim());
                     pstmt.setString(2, datos[1].trim());
-
                     StringBuilder paradas = new StringBuilder();
                     for (int i = 2; i < datos.length; i++) {
                         if (i > 2)
                             paradas.append(";");
                         paradas.append(datos[i].trim());
                     }
-
                     pstmt.setString(3, paradas.toString());
                     pstmt.executeUpdate();
                 }
@@ -82,12 +70,10 @@ public class DatosRutas {
     }
 
     private void cargarHorarios(Connection conn) throws SQLException, IOException {
-        String filePath = "C:\\Users\\User\\Desktop\\Estructuras de datos\\Mejorado\\src\\main\\java\\Recursos\\Horarios.csv";
+        String filePath = "C:\\Users\\Lenin\\Desktop\\aab2-proyecto-grupo_1\\Solucion_Codigo\\Mejorado\\src\\main\\java\\Recursos\\Horarioss.csv";
         String sql = "INSERT IGNORE INTO horarios (hora, lineas) VALUES (?, ?)";
-
         try (BufferedReader br = new BufferedReader(new FileReader(filePath));
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
             String line;
             while ((line = br.readLine()) != null) {
                 String[] datos = line.split(";");
@@ -100,7 +86,6 @@ public class DatosRutas {
                             lineas.append(";");
                         lineas.append(datos[i].trim());
                     }
-
                     pstmt.setString(2, lineas.toString());
                     pstmt.executeUpdate();
                 }
@@ -109,13 +94,10 @@ public class DatosRutas {
     }
 
     private void cargarChoferes(Connection conn) throws SQLException, IOException {
-        String filePath = "C:\\Users\\User\\Desktop\\Estructuras de datos\\Mejorado\\src\\main\\java\\Recursos\\Choferes.csv";
-
+        String filePath = "C:\\Users\\Lenin\\Desktop\\aab2-proyecto-grupo_1\\Solucion_Codigo\\Mejorado\\src\\main\\java\\Recursos\\Choferes.csv";
         String sql = "INSERT IGNORE INTO choferes (id_chofer, nombre, licencia) VALUES (?, ?, ?)";
-
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             br.readLine();
-
             String line;
             try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 while ((line = br.readLine()) != null) {
@@ -132,10 +114,8 @@ public class DatosRutas {
     }
 
     private void cargarBuses(Connection conn) throws SQLException, IOException {
-        String filePath = "C:\\Users\\User\\Desktop\\Estructuras de datos\\Mejorado\\src\\main\\java\\Recursos\\Bus.csv";
-
+        String filePath = "C:\\Users\\Lenin\\Desktop\\aab2-proyecto-grupo_1\\Solucion_Codigo\\Mejorado\\src\\main\\java\\Recursos\\Bus.csv";
         String sql = "INSERT IGNORE INTO buses (id_bus, placa, capacidad, estado, id_chofer) VALUES (?, ?, ?, ?, ?)";
-
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             br.readLine();
 
