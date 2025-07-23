@@ -1,16 +1,62 @@
-# Proyecto bimestral de investigación y desarrollo
+# 🚍 Sistema de Buses UTPL  
 
-## Aplicar POO con estructuras de control/datos (arreglos estáticos/dinámicos), y serialización de archivos
+🔹 *Sistema de gestión de transporte universitario que permite buscar rutas por parada o línea, simular acceso de pasajeros, administrar líneas/paradas y asignar choferes.* 
 
-* Usar el programa **DIA-UML** _(Open source)_ (u otros) para generar la representación de su solución _(modelado)_, vía diagramas de clases.
-* Genere/agregue 2 archivos _(fuente e img: \*.dia y \*.png \*.jpeg, etc)_. Titular su modelado con el nombre representativo del análisis/solución; el subDirectorio para ello es: **Modelado_UML**
-* En el subDirectorio **Solucion_Codigo** cree un único proyecto NetBeans - _Java Aplication_ (o con el IDE de su preferencia) y en él, agregue todas las clases necesarias para la solución _(use el empaquetado para aplicar el patrón arquitectónico MVC)_. Dentro de este mismo directorio almacene su solución Python.
-* Respete la arquitectura **MVC**, es decir, no implemente entradas/salidas desde/hacia teclado-consola directamente en las clases base _(paquetes **MC**)_. Los datos de entrada y resultados deben ser ingresados/mostrados desde/hacia teclado-consola, en la clase de prueba/ejecutor _(paquete **V**)_. No olvide el uso de paquetes para ello.
-* En el subDirectorio **Varios**, puede agregar archivos adicionales, uno de ellos corresponden a los slides para la defensa grupal y calificación individual de su solución.
-* Todos los objetos/información serán almacenados en archivos con extensión .dat, haciendo uso de la serialización de objetos.
-* Aquí revise la miscelánea  de temas para el proyecto: **[Miscelanea ejercicios Proyecto.docx](https://github.com/POO-UTPL/AAB1_Proyecto/blob/main/Varios/Miscelanea%20ejercicios%20Proyecto.docx)**, y elija uno de ellos. 
-* Considere la rúbrica de evaluación de esta actividad, con el fin de elaborar cada componente de su solución y defensa dados los lineamientos específicos de calificación.  
-___
+## Arquitectura MVC 
+````plaintext
+src/
+├── main/
+│   ├── java/
+│   │   ├── Controlador/            # Entidades y Lógica
+│   │   │   ├── Admin.java
+│   │   │   ├── Bus.java
+│   │   │   ├── Buscador.java
+│   │   │   ├── Chofer.java
+│   │   │   ├── Estudiante.java
+│   │   │   ├── Horario.java
+│   │   │   ├── Linea.java
+│   │   │   ├── ModificaciónRutas.java
+│   │   │   ├── OptimizaciónRutas.java
+│   │   │   ├── Parada.java
+│   │   │   └── Persona.java
+│   │   ├── Modelo/                 # Persistencia con Bases de Datos
+│   │   │   ├── Conexion.java
+│   │   │   └── DatosRutas.java
+│   │   ├── Vista/                  # Interfaz de usuario por consola
+│   │   │   ├── VistaAdmin.java
+│   │   │   ├── VistaBusqueda.java
+│   │   │   ├── VistaPrincipal.java
+│   │   │   └── VistaRutas.java
+│   │   └── Recursos/               # Datos a utilizar
+│   │       ├── Bus.csv
+│   │       ├── Choferes.csv
+│   │       ├── Horario.csv
+│   │       └── Lineasbu.csv
+│   └── main.java                   # Orquestador
+└── test/                         
+````
+## 🛠️ Tecnologías  
+![Java](https://img.shields.io/badge/Java-17-ED8B00?logo=openjdk&logoColor=white)  
+![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?logo=mysql&logoColor=white)  
+![Maven](https://img.shields.io/badge/Maven-3.9.6-C71A36?logo=apache-maven)  
 
-> [!Note]
-> La fecha de presentación final de su proyecto con los apartados de: Modelado, Solución y Slides _(del UML, código, resultados)_, es en la **Semana 16** del primer bimestre. 
+## 📌 Funcionalidades Principales  
+- **Búsqueda de rutas** por parada o línea de bus.  
+- **Simulación de acceso** de pasajeros a los buses.  
+- **Gestión de líneas**: Crear, eliminar y agregar paradas a líneas existentes.  
+- **Asignación de choferes** a líneas creadas.  
+
+## 🔥 **Fases**  
+1. **Fase 1**: Resultado mediante consola.  
+2. **Fase 2**: Integración de mas paradigmas e interfaz grafica con javaFX .  
+3. **Fase 3**: Integración de Mapas mediante API de Maps.  
+## 🚀 Instalación y Ejecución  
+1. Clona el repositorio:  
+   ```bash
+   git clone https://github.com/POO-C-AA25/aab2-proyecto-grupo_1.git
+
+## Autores
+
+[@Cristhian Quizhpe](https://github.com/Cristhian23456) - Desarrollo .
+
+[@Lennin Salinas](https://github.com/Stalinn99) - Desarrollo.
