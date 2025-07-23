@@ -74,15 +74,15 @@ public class VistaRutas {
                     analisis.linea.getNombre());
             System.out.printf("Ocupación: %.1f%% ", analisis.porcentajeOcupacion);
             if (analisis.esFavorable) {
-                System.out.println("(✓ Óptima)");
+                System.out.println("( ~ Óptima)");
                 lineasFavorables++;
             } else {
-                System.out.println("(⚠ Requiere ajustes)");
+                System.out.println("(!! Requiere ajustes)");
                 lineasProblematicas++;
             }
             System.out.println("Recomendaciones:");
             for (String recomendacion : analisis.recomendaciones) {
-                System.out.println("  • " + recomendacion);
+                System.out.println("  - " + recomendacion);
             }
             System.out.println("----------------------------------------");
         }

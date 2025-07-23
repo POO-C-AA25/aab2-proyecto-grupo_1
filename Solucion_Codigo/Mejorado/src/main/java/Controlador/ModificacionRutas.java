@@ -48,14 +48,20 @@ public class ModificacionRutas {
     }
 
     public boolean agregarParadas(String idLinea, String nuevasParadas) {
-        String sql = "UPDATE lineas SET paradas = CONCAT(paradas, ';', ?) WHERE id_linea = ?";
+        String sql = "UPDATE lineas SET paradas = CONCAT(COALESCE(paradas, ''), ';', ?) WHERE id_linea = ?";
         try (PreparedStatement pstmt = conexion.prepareStatement(sql)) {
             pstmt.setString(1, nuevasParadas);
             pstmt.setString(2, idLinea);
             int affectedRows = pstmt.executeUpdate();
+            conexion.commit();
             return affectedRows > 0;
         } catch (SQLException e) {
             System.err.println("Error al agregar paradas: " + e.getMessage());
+            try {
+                conexion.rollback();
+            } catch (SQLException ex) {
+                System.err.println("Error al revertir: " + ex.getMessage());
+            }
             return false;
         }
     }
@@ -97,5 +103,4 @@ public class ModificacionRutas {
             return false;
         }
     }
-
 }

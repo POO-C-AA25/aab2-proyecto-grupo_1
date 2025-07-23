@@ -87,7 +87,6 @@ public class VistaAdmin {
         System.out.println("\n=== DESIGNAR CHOFER A BUS ===");
         System.out.print("ID del chofer: ");
         String idChofer = scanner.nextLine();
-
         System.out.print("ID del bus: ");
         String idBus = scanner.nextLine();
 
@@ -101,7 +100,6 @@ public class VistaAdmin {
     private void mostrarOptimizacionRutas() {
         System.out.println("\n=== OPTIMIZACIÓN DE RUTAS ===");
         System.out.print("Ingrese el porcentaje mínimo de ocupación (0-100): ");
-
         try {
             double porcentajeMinimo = scanner.nextDouble();
             scanner.nextLine();
@@ -110,12 +108,9 @@ public class VistaAdmin {
                 System.out.println("El porcentaje debe estar entre 0 y 100");
                 return;
             }
-
             List<AnalisisLinea> analisisLineas = optimizador.analizarTodasLasLineas();
             boolean hayResultados = false;
-
             System.out.println("\n=== LÍNEAS QUE SUPERAN EL " + porcentajeMinimo + "% DE OCUPACIÓN ===");
-
             for (AnalisisLinea analisis : analisisLineas) {
                 if (analisis.porcentajeOcupacion >= porcentajeMinimo) {
                     hayResultados = true;
@@ -131,11 +126,9 @@ public class VistaAdmin {
                     System.out.println("----------------------------------------");
                 }
             }
-
             if (!hayResultados) {
                 System.out.println("No se encontraron líneas que superen el " + porcentajeMinimo + "% de ocupación.");
             }
-
         } catch (Exception e) {
             System.out.println("Error: Ingrese un número válido");
             scanner.nextLine();

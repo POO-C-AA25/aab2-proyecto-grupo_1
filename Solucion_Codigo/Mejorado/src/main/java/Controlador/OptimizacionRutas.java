@@ -26,23 +26,19 @@ public class OptimizacionRutas {
     public List<AnalisisLinea> analizarTodasLasLineas() {
         List<AnalisisLinea> analisisLineas = new ArrayList<>();
         String sql = "SELECT id_linea, nombre, paradas FROM lineas ORDER BY id_linea";
-
         try (PreparedStatement pstmt = conexion.prepareStatement(sql);
                 ResultSet rs = pstmt.executeQuery()) {
-
             while (rs.next()) {
                 Linea linea = new Linea(rs.getString("id_linea"), rs.getString("nombre"));
                 linea.setParadas(rs.getString("paradas"));
                 double porcentajeOcupacion = Math.random() * 100;
                 boolean esFavorable = porcentajeOcupacion >= UMBRAL_FAVORABLE;
                 List<String> recomendaciones = generarRecomendaciones(porcentajeOcupacion);
-
                 analisisLineas.add(new AnalisisLinea(linea, porcentajeOcupacion, esFavorable, recomendaciones));
             }
         } catch (SQLException e) {
             System.err.println("Error al analizar líneas: " + e.getMessage());
         }
-
         return analisisLineas;
     }
 
